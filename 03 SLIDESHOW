@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLIDESHOW</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<style>
+:root {
+	--pattern-border-radius: 10px;
+  }
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.container-slide{
+	display: flex;
+	justify-content: space-between;
+	width: 50vw;
+	height: 50vh;
+	background-color: black;
+	margin: 20vh auto;
+	border-radius: var(--pattern-border-radius);
+	box-shadow: 0 20px 30px #00000088;
+	border: 5px solid black;
+}
+
+.container-items{
+	position: absolute;
+	display: flex;
+	width: 50vw;
+	height: 50vh;
+	border-radius: var(--pattern-border-radius);
+	overflow: hidden;
+}
+
+.item{
+	width: 50vw;
+	height: 50vh;
+	transition: all 1s;
+}
+
+.item:first-child{
+	margin-left: -100%;
+}
+
+.item img{
+	width: 50vw;
+	height: 50vh;
+	border-radius: var(--pattern-border-radius);
+}
+
+.action-button{
+	font: bold 30px sans-serif;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 50px;
+	color: #00000000;
+	user-select: none;
+	z-index: 1;
+}
+
+.action-button:hover{
+	color: white;
+	background-color: #00000088;
+	cursor: pointer;
+	transition: all 1s;
+}
+
+#previous{
+	border-radius: var(--pattern-border-radius) 0px 0px var(--pattern-border-radius);
+}
+
+#next{
+	border-radius: 0px var(--pattern-border-radius) var(--pattern-border-radius) 0px;
+}
+</style>
+<body>
+    <div class="container-slide">
+        <div class="action-button" id="previous">&laquo</div>
+        <div class="container-items" id="container-items"></div>
+        <div class="action-button" id="next">&raquo</div>
+    </div>
+    <script src="./slideShow.js">
+    'use strict';
+
+const images = [
+    { 'id': '1', 'url':'./img/chrono.jpg' },
+    { 'id': '2', 'url':'./img/inuyasha.jpg' },
+    { 'id': '3', 'url':'./img/tenchi.jpg' },
+    { 'id': '4', 'url':'./img/tenjhotenge.jpg' },
+    { 'id': '5', 'url':'./img/yuyuhakusho.jpg' },
+    { 'id': '6', 'url':'./img/ippo.png' },
+]
+
+const containerItems = document.querySelector('#container-items');
+
+const loadImages = ( images, container ) => {
+    images.forEach ( image => {
+        container.innerHTML += `
+            <div class='item'>
+                <img src='${image.url}'
+            </div>
+        `
+    })
+}
+
+loadImages( images, containerItems );
+
+let items = document.querySelectorAll('.item');
+
+const previous = () => {
+    containerItems.appendChild(items[0]);
+    items = document.querySelectorAll('.item');
+}
+
+const next = () => {
+    const lastItem = items[items.length - 1];
+    containerItems.insertBefore( lastItem, items[0] );
+    items = document.querySelectorAll('.item');
+}
+
+document.querySelector('#previous').addEventListener('click', previous);
+document.querySelector('#next').addEventListener('click', next);
+    </script>
+</body>
+</html>
